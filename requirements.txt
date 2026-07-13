@@ -1,0 +1,9 @@
+# Service cores are pure standard library. These run the FastAPI services:
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2
+httpx>=0.27
+# Production adapters (optional):
+# redis>=5
+# aiokafka>=0.10
+# tritonclient>=2.40

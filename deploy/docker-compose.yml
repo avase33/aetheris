@@ -1,0 +1,43 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: aetheris
+      POSTGRES_DB: aetheris
+    ports: ["5432:5432"]
+
+  gateway:
+    build: { context: .., dockerfile: Dockerfile }
+    environment:
+      - SERVICE=gateway
+      - VISION_URL=http://vision-edge:8000
+      - AGENTS_URL=http://agent-orchestrator:8000
+      - PRIVACY_URL=http://data-privacy-proxy:8000
+      - MLOPS_URL=http://mlops-drift-watcher:8000
+    ports: ["8000:8000"]
+    depends_on: [vision-edge, agent-orchestrator, data-privacy-proxy, mlops-drift-watcher]
+
+  vision-edge:
+    build: { context: .., dockerfile: Dockerfile }
+    environment: [SERVICE=vision, "AETHERIS_BUS=redis", "REDIS_URL=redis://redis:6379"]
+    depends_on: [redis]
+
+  agent-orchestrator:
+    build: { context: .., dockerfile: Dockerfile }
+    environment: [SERVICE=agents, "AETHERIS_BUS=redis", "REDIS_URL=redis://redis:6379"]
+    depends_on: [redis]
+
+  data-privacy-proxy:
+    build: { context: .., dockerfile: Dockerfile }
+    environment: [SERVICE=privacy, "AETHERIS_LLM=mock"]
+
+  mlops-drift-watcher:
+    build: { context: .., dockerfile: Dockerfile }
+    environment:
+      - SERVICE=mlops
+      - DATABASE_URL=postgresql://postgres:aetheris@postgres:5432/aetheris
+    depends_on: [postgres]

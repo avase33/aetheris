@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aetheris"
+version = "0.1.0"
+description = "Autonomous Enterprise Thermal, Environmental & Robotic Infrastructure System — a monorepo of edge-CV, self-healing agent, PII-firewall and MLOps-drift microservices behind a core gateway. Offline-first."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Akhil Vase" }]
+keywords = ["microservices", "computer-vision", "edge", "mlops", "drift", "agents", "privacy", "kubernetes", "fastapi"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Framework :: FastAPI",
+  "Environment :: Web Environment",
+]
+dependencies = []  # every service core is pure standard library
+
+[project.optional-dependencies]
+server = ["fastapi>=0.110", "uvicorn[standard]>=0.29", "pydantic>=2", "httpx>=0.27"]
+redis = ["redis>=5"]
+kafka = ["aiokafka>=0.10"]
+triton = ["tritonclient>=2.40"]
+dev = ["pytest>=7", "httpx>=0.27", "fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2"]
+
+[project.scripts]
+aetheris = "aetheris.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/avase33/aetheris"
+Issues = "https://github.com/avase33/aetheris/issues"
+
+[tool.setuptools.packages.find]
+include = ["aetheris*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Runtime
+*.db
+*.sqlite3
+
+# Env
+.env
+
+# Local verification helpers
+verify_aetheris.py
+run_aetheris_verify.bat
+aetheris_verify_output.txt
+run_console.txt
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
